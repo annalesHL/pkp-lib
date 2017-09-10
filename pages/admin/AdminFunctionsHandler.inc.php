@@ -82,6 +82,9 @@ class AdminFunctionsHandler extends AdminHandler {
 	function clearTemplateCache($args, $request) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->clearTemplateCache();
+        // SAN
+        $templateMgr->clearCssCache();
+        //     
 		$request->redirect(null, 'admin');
 	}
 
