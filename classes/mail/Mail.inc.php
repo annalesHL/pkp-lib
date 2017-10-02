@@ -514,12 +514,11 @@ class Mail extends DataObject {
 		}
 
 		try {
-			$mailer->Send();
+			return $mailer->Send();
 		} catch (phpmailerException $e) {
 			error_log($mailer->ErrorInfo);
 			return false;
 		}
-		return true;
 	}
 
 	/**

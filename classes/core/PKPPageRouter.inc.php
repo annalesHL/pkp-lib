@@ -176,6 +176,18 @@ class PKPPageRouter extends PKPRouter {
 			}
 		}
 
+		// Route to "Page not found" if the context is not defined
+		$context = $request->getContext();
+		if ($context === null) {
+			$contextDao = $contextDao = Application::getContextDAO();
+			$contexts = $contextDao->getAll();
+			if (count($contexts) == 1) {
+				$context = $contexts->next();
+				$this->_contexts[1] = $context;
+			}
+			$request->getDispatcher()->handle404();
+		}
+
 		// Redirect requests from logged-out users to a context which is not
 		// publicly enabled
 		if (!defined('SESSION_DISABLE_INIT')) {

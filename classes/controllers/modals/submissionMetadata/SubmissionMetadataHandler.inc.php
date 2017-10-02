@@ -55,12 +55,14 @@ class SubmissionMetadataHandler extends Handler {
 		// Identify the stage, if we have one.
 		$stageId = $this->getAuthorizedContextObject(ASSOC_TYPE_WORKFLOW_STAGE);
 
+		/*
 		// prevent anyone but managers and editors from submitting the catalog entry form
 		$userRoles = $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES);
 		if (!array_intersect(array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR), $userRoles)) {
 			$params['hideSubmit'] = true;
 			$params['readOnly'] = true;
 		}
+		*/
 
 		// Form handling
 		$submissionMetadataViewForm = $this->getFormInstance($submission->getId(), $stageId, $params);
@@ -89,6 +91,7 @@ class SubmissionMetadataHandler extends Handler {
 			$notificationManager = new NotificationManager();
 			$user = $request->getUser();
 			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SUCCESS, array('contents' => __('notification.savedSubmissionMetadata')));
+
 			return new JSONMessage();
 		} else {
 			return new JSONMessage(false);

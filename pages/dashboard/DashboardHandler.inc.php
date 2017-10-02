@@ -43,7 +43,6 @@ class DashboardHandler extends Handler {
 		if ($request->getContext()) {
 			$templateMgr = TemplateManager::getManager($request);
 			$this->setupTemplate($request);
-			$templateMgr->force_compile = TRUE;
 			return $templateMgr->display('dashboard/index.tpl');
 		}
 		$request->redirect(null, 'user');

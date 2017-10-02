@@ -75,7 +75,7 @@
 		{foreach from=$gridBodyParts item=bodyPart}
 			{$bodyPart}
 		{foreachelse}
- 			<tbody></tbody>
+			<tbody></tbody>
 		{/foreach}
 		<tbody class="empty"{if count($gridBodyParts) > 0} style="display: none;"{/if}>
 			{**

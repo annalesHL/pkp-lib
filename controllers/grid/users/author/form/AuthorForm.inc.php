@@ -37,7 +37,7 @@ class AuthorForm extends Form {
 		// Validation checks for this form
 		$this->addCheck(new FormValidator($this, 'firstName', 'required', 'submission.submit.form.authorRequiredFields'));
 		$this->addCheck(new FormValidator($this, 'lastName', 'required', 'submission.submit.form.authorRequiredFields'));
-		$this->addCheck(new FormValidatorEmail($this, 'email', 'required', 'form.emailRequired'));
+		$this->addCheck(new FormValidatorEmail($this, 'email', 'optional', 'form.emailInvalid'));
 		$this->addCheck(new FormValidatorUrl($this, 'userUrl', 'optional', 'user.profile.form.urlInvalid'));
 		$this->addCheck(new FormValidator($this, 'userGroupId', 'required', 'submission.submit.form.contributorRoleRequired'));
 		$this->addCheck(new FormValidatorORCID($this, 'orcid', 'optional', 'user.orcid.orcidInvalid'));
@@ -213,7 +213,7 @@ class AuthorForm extends Form {
 		$author->setUserGroupId($this->getData('userGroupId'));
 		$author->setBiography($this->getData('biography'), null); // localized
 		$author->setPrimaryContact(($this->getData('primaryContact') ? true : false));
-		$author->setIncludeInBrowse(($this->getData('includeInBrowse') ? true : false));
+		$author->setIncludeInBrowse(($this->getData('email') !== "" && $this->getData('includeInBrowse') ? true : false));
 
 		// in order to be able to use the hook
 		parent::execute();

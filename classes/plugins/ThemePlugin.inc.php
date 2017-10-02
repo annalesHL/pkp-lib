@@ -266,6 +266,7 @@ abstract class ThemePlugin extends LazyLoadPlugin {
 		// If no parent theme, no style was found
 		if (!isset($this->parent)) {
 			$style = null;
+            error_log("STYLE NOT FOUND $name", 0); // SAN
 			return $style;
 		}
 

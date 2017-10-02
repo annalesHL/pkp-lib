@@ -725,18 +725,23 @@ class FormBuilderVocabulary {
 	function _smartyFBVFileInput($params, &$smarty) {
 		$params['name'] = isset($params['name']) ? $params['name'] : $params['id'];
 		$params['translate'] = isset($params['translate']) ? $params['translate'] : true;
+		$params['suppressId'] = true;
 
-		$smarty->clear_assign(array('FBV_id', 'FBV_label_content', 'FBV_checked', 'FBV_disabled', 'FBV_submit'));
+		$smarty->clear_assign(array('FBV_id', 'FBV_label_content', 'FBV_checked', 'FBV_disabled', 'FBV_submit', 'FBV_value', 'FBV_fileId'));
 		foreach ($params as $key => $value) {
 			switch ($key) {
 				case 'type': break;
 				case 'id':
 				case 'submit':
 				case 'name':
+				case 'value':
+				case 'fileId':
 				case 'disabled':
 					$smarty->assign('FBV_' . $key, $value);
 					break;
-				case 'label': $smarty->assign('FBV_label_content', $this->_smartyFBVSubLabel($params, $smarty)); break;
+				case 'label':
+					$smarty->assign('FBV_label_content', $this->_smartyFBVSubLabel($params, $smarty));
+					break;
 			}
 		}
 

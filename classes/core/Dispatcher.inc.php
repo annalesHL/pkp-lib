@@ -245,7 +245,15 @@ class Dispatcher {
 		PKPRequest::_checkThis();
 
 		header('HTTP/1.0 404 Not Found');
-		fatalError('404 Not Found');
+		$request = Application::getRequest();
+		$templateMgr = TemplateManager::getManager($request);
+		$templateMgr->assign(array(
+			'requestedPage' => "404",
+			'requestedOp' => "",
+		));
+		$templateMgr->display('frontend/pages/404.tpl');
+
+		die();
 	}
 }
 

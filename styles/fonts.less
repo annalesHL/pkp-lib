@@ -26,3 +26,38 @@
 }
 
 @import "lib/pkp/styles/fontawesome/fontawesome.less";
+
+
+/** SAN: on met les fontes ici plutôt que dans le répertoire du thème,
+en espérant que ça accélère le chargement de la page */
+
+/**
+ * ORATOR Font
+ */
+@font-face {
+    font-family: 'orator_stdregular';
+    src: url('@{baseUrl}/lib/pkp/fonts/orator/oratorstd-webfont.eot');
+    src: url('@{baseUrl}/lib/pkp/fonts/orator/oratorstd-webfont.eot?#iefix') format("embedded-opentype"),
+    url('@{baseUrl}/lib/pkp/fonts/orator/oratorstd-webfont.woff') format("woff"),
+    url('@{baseUrl}/lib/pkp/fonts/orator/oratorstd-webfont.ttf') format("truetype"),
+    url('@{baseUrl}/lib/pkp/fonts/orator/oratorstd-webfont.svg#orator_stdregular') format("svg");
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: -1px;
+}
+
+// Ajouter la fonte "Letter Gothic" ?
+@font-face {
+    font-family: 'lettergothic';
+    src: url('@{baseUrl}/lib/pkp/fonts/lettergothic/LetterGothicStd.otf') format('truetype'),
+    url('@{baseUrl}/lib/pkp/fonts/lettergothic/LetterGothic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'lettergothic';
+    src: url('@{baseUrl}/lib/pkp/fonts/lettergothic/LetterGothicBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}

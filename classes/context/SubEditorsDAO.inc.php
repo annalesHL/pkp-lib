@@ -89,6 +89,37 @@ class SubEditorsDAO extends DAO {
 	}
 
 	/**
+	 * Retrieve a list of all section chief editors assigned to the specified section.
+	 * @param $sectionId int
+	 * @param $contextId int
+	 * @return array matching Users
+	 */
+	function getChiefsBySectionId($sectionId, $contextId) {
+		$result = $this->retrieve(
+			'SELECT	u.user_id
+			FROM	section_editors e
+				JOIN users u ON (e.user_id = u.user_id)
+			WHERE	e.context_id = ? AND
+				e.section_id = ? AND
+				e.section_chief = 1
+			ORDER BY u.last_name, u.first_name',
+			array((int) $contextId, (int) $sectionId)
+		);
+
+		$users = array();
+		$userDao = DAORegistry::getDAO('UserDAO');
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$user = $userDao->getById($row['user_id']);
+			$users[$user->getId()] = $user;
+			$result->MoveNext();
+		}
+
+		$result->Close();
+		return $users;
+	}
+
+	/**
 	 * Retrieve a list of all section editors not assigned to the specified section.
 	 * @param $contextId int
 	 * @param $sectionId int

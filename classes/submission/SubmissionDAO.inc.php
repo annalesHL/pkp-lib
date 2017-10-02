@@ -785,7 +785,6 @@ abstract class SubmissionDAO extends DAO implements PKPPubIdPluginDAO {
 			$params,
 			$rangeInfo
 		);
-
 		return new DAOResultFactory($result, $this, '_fromRow');
 	}
 

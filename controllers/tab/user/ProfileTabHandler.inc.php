@@ -73,9 +73,8 @@ class ProfileTabHandler extends Handler {
 			$identityForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-			return new JSONMessage(true);
 		}
-		return new JSONMessage(false, $identityForm->fetch($request));
+		return new JSONMessage(true, $identityForm->fetch($request));
 	}
 
 	/**
@@ -108,9 +107,8 @@ class ProfileTabHandler extends Handler {
 			$contactForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-			return new JSONMessage(true);
 		}
-		return new JSONMessage(false, $contactForm->fetch($request));
+		return new JSONMessage(true, $contactForm->fetch($request));
 	}
 
 	/**
@@ -143,9 +141,8 @@ class ProfileTabHandler extends Handler {
 			$rolesForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-			return new JSONMessage(true);
 		}
-		return new JSONMessage(false, $rolesForm->fetch($request));
+		return new JSONMessage(true, $rolesForm->fetch($request));
 	}
 
 	/**
@@ -207,7 +204,6 @@ class ProfileTabHandler extends Handler {
 			$publicProfileForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-			return new JSONMessage(true);
 		}
 		return new JSONMessage(true, $publicProfileForm->fetch($request));
 	}
@@ -242,8 +238,6 @@ class ProfileTabHandler extends Handler {
 			$passwordForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-			return new JSONMessage(true);
-
 		}
 		return new JSONMessage(true, $passwordForm->fetch($request));
 	}
@@ -282,8 +276,6 @@ class ProfileTabHandler extends Handler {
 			$notificationSettingsForm->execute($request);
 			$notificationMgr = new NotificationManager();
 			$notificationMgr->createTrivialNotification($request->getUser()->getId());
-		} else {
-			$json->setStatus(false);
 		}
 
 		return $json;

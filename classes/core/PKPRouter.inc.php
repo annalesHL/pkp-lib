@@ -234,6 +234,7 @@ class PKPRouter {
 			}
 		}
 
+
 		return $this->_contexts[$requestedContextLevel];
 	}
 
@@ -464,8 +465,8 @@ class PKPRouter {
 				// No new context has been set so determine
 				// the current request's context
 				$contextObject = $this->getContextByName($request, $contextName);
-				if ($contextObject) $contextValue = $contextObject->getPath();
-				else $contextValue = 'index';
+			 	if ($contextObject) $contextValue = $contextObject->getPath();
+				else $contextValue = 'AHL'; // $contextValue = 'index';
 			}
 
 			// Check whether the base URL is overridden.

@@ -88,87 +88,75 @@ class PageHandler extends Handler {
 		if (empty($name)) {
 			$name = 'pkp-lib';
 		}
-		switch ($name) {
 
-			// The core app stylesheet
-			case 'pkp-lib':
-				$cachedFile = $templateManager->getCachedLessFilePath($name);
-				if (!file_exists($cachedFile)) {
-					$styles = $templateManager->compileLess($name, 'styles/index.less');
-					if (!$templateManager->cacheLess($cachedFile, $styles)) {
-						echo $styles;
-						die;
-					}
-				}
-				break;
+		// Backwards compatibility. This hook is deprecated.
+		if (HookRegistry::getHooks('PageHandler::displayCss')) {
+			$result = '';
+			$lastModified = null;
+			HookRegistry::call('PageHandler::displayCss', array($request, &$name, &$result, &$lastModified));
+			if ($lastModified) header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastModified) . ' GMT');
+			header('Content-Length: ' . strlen($result));
+			echo $result;
+			die;
 
-			default:
+		} else {
+			$cachedFile = $templateManager->getCachedLessFilePath($name);
+			if (!file_exists($cachedFile)) {
+			//if (true) {
 
-				// Backwards compatibility. This hook is deprecated.
-				if (HookRegistry::getHooks('PageHandler::displayCss')) {
-					$result = '';
-					$lastModified = null;
-					HookRegistry::call('PageHandler::displayCss', array($request, &$name, &$result, &$lastModified));
-					if ($lastModified) header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastModified) . ' GMT');
-					header('Content-Length: ' . strlen($result));
-					echo $result;
-					die;
+				// Process styles registered with the current theme
+				$styles = '';
+				$themes = PluginRegistry::loadCategory('themes', true);
+				foreach($themes as $theme) {
+					if ($theme->isActive()) {
+						$style = $theme->getStyle($name);
+						if (!empty($style)) {
 
-				} else {
-					$cachedFile = $templateManager->getCachedLessFilePath($name);
-					if (!file_exists($cachedFile)) {
-
-						// Process styles registered with the current theme
-						$styles = '';
-						$themes = PluginRegistry::loadCategory('themes', true);
-						foreach($themes as $theme) {
-							if ($theme->isActive()) {
-								$style = $theme->getStyle($name);
-								if (!empty($style)) {
-
-									// Compile and cache the stylesheet
-									$styles = $templateManager->compileLess(
-										$name,
-										$style['style'],
-										array(
-											'baseUrl'          => isset($style['baseUrl']) ? $style['baseUrl'] : null,
-											'addLess'          => isset($style['addLess']) ? $style['addLess'] : null,
-											'addLessVariables' => isset($style['addLessVariables']) ? $style['addLessVariables'] : null,
-										)
-									);
-								}
-								break;
-							}
-						}
-
-						// If we still haven't found styles, fire off a hook
-						// which allows other types of plugins to handle
-						// requests
-						if (!$styles) {
-							HookRegistry::call(
-								'PageHandler::getCompiledLess',
+							// Compile and cache the stylesheet
+							$styles = $templateManager->compileLess(
+								$name,
+								$style['style'],
 								array(
-									'request'    => $request,
-									'name'       => &$name,
-									'styles'     => &$styles,
+									'baseUrl'          => isset($style['baseUrl']) ? $style['baseUrl'] : null,
+									'addLess'          => isset($style['addLess']) ? $style['addLess'] : null,
+									'addLessVariables' => isset($style['addLessVariables']) ? $style['addLessVariables'] : null,
 								)
 							);
 						}
-
-						// Give up if there are still no styles
-						if (!$styles) {
-							die;
-						}
-
-						// Try to save the styles to a cached file. If we can't,
-						// just print them out
-						if (!$templateManager->cacheLess($cachedFile, $styles)) {
-							echo $styles;
-							die;
-						}
+						break;
 					}
 				}
-				break;
+
+				if ($name === 'pkp-lib' && !$styles) {
+					$styles = $templateManager->compileLess($name, 'styles/index.less');
+				}
+
+				// If we still haven't found styles, fire off a hook
+				// which allows other types of plugins to handle
+				// requests
+				if (!$styles) {
+					HookRegistry::call(
+						'PageHandler::getCompiledLess',
+						array(
+							'request'    => $request,
+							'name'       => &$name,
+							'styles'     => &$styles,
+						)
+					);
+				}
+
+				// Give up if there are still no styles
+				if (!$styles) {
+					die;
+				}
+
+				// Try to save the styles to a cached file. If we can't,
+				// just print them out
+				if (!$templateManager->cacheLess($cachedFile, $styles)) {
+					echo $styles;
+					die;
+				}
+			}
 		}
 
 		// Deliver the cached file
@@ -226,3 +214,4 @@ class PageHandler extends Handler {
 }
 
 ?>
+

@@ -461,7 +461,6 @@ class PKPTemplateManager extends Smarty {
 	 *      stylesheet data. Used to pass backend data to the scripts.
 	 */
 	function addStyleSheet($name, $style, $args = array()) {
-
 		$args = array_merge(
 			array(
 				'priority' => STYLE_SEQUENCE_NORMAL,

@@ -196,6 +196,7 @@ class PKPComponentRouter extends PKPRouter {
 				// Construct the component handler file name and test its existence.
 				$component = 'controllers.'.$component;
 				$componentFileName = str_replace('.', DIRECTORY_SEPARATOR, $component).'.inc.php';
+
 				switch (true) {
 					case file_exists($componentFileName):
 						break;
@@ -402,7 +403,6 @@ class PKPComponentRouter extends PKPRouter {
 				// Invalid request
 				return null;
 			}
-
 			// Assign the validated service endpoint parts
 			$this->_rpcServiceEndpointParts = $rpcServiceEndpointParts;
 		}

@@ -188,7 +188,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	function viewEmail($args, $request) {
 		$submissionEmailLogDao = DAORegistry::getDAO('SubmissionEmailLogDAO');
 		$emailLogEntry = $submissionEmailLogDao->getById((int) $args['emailLogEntryId']);
-		return new JSONMessage(true, $this->_formatEmail($emailLogEntry));
+		return new JSONMessage(true, $this->_formatEmail($emailLogEntry, $request));
 	}
 
 	/**
@@ -196,6 +196,7 @@ class SubmissionEventLogGridHandler extends GridHandler {
 	 * @param $emailLogEntry EmailLogEntry
 	 * @return string Formatted email
 	 */
+	/*
 	function _formatEmail($emailLogEntry) {
 		assert(is_a($emailLogEntry, 'EmailLogEntry'));
 
@@ -206,6 +207,20 @@ class SubmissionEventLogGridHandler extends GridHandler {
 		$text[] = $emailLogEntry->getBody();
 
 		return nl2br(PKPString::stripUnsafeHtml(implode(PHP_EOL . PHP_EOL, $text)));
+	}
+	*/
+	function _formatEmail($emailLogEntry, $request) {
+		assert(is_a($emailLogEntry, 'EmailLogEntry'));
+
+		$templateMgr = TemplateManager::getManager($request);
+		$templateMgr->assign(array(
+			'from' => $emailLogEntry->getFrom(),
+			'to' => $emailLogEntry->getRecipients(),
+			'cc' => $emailLogEntry->getCcs(),
+			'subject' => $emailLogEntry->getSubject(),
+			'body' => nl2br(PKPString::stripUnsafeHtml($emailLogEntry->getBody())),
+		));
+		return $templateMgr->fetch('controllers/grid/email/view.tpl');
 	}
 }
 
