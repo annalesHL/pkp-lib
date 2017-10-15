@@ -573,6 +573,8 @@
 					elementId = $element.attr('id'),
 					settings = tinyMCE.EditorManager.settings;
 
+			if (settings) {  // added by XAVIER
+
 			settings.defaultToolbar = settings.toolbar;
 
 			$('#' + elementId).find('.richContent').each(function() {
@@ -615,6 +617,7 @@
 					}
 				}
 			});
+			}
 		}
 	};
 
